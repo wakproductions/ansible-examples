@@ -1,0 +1,19 @@
+---
+# Based on tutorial https://wiki.postgresql.org/wiki/Compile_and_Install_from_source_code
+
+- name: Install dependencies for Postgres 9.5.0
+  apt: name={{ item }} state=installed
+  with_items:
+    - build-essential
+    - libreadline-dev
+    - zlib1g-dev
+    - flex
+    - bison
+    - libxml2-dev
+    - libxslt-dev
+    - libssl-dev
+
+- name: Install Postgres
+  apt:
+    name:  postgresql-9.5
+    state: present

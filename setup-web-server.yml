@@ -4,4 +4,4 @@
   remote_user: ubuntu
   become: yes
   roles:
-    - { role: web }
+    - { role: server-web }

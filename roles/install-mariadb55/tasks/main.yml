@@ -1,0 +1,26 @@
+---
+# Based on the default in the Ubuntu apt-get repository. (5.5.54 at this time)
+# For version-specific install procedure look at: https://downloads.mariadb.org/
+
+- name: Install dependencies for MariaDB
+  apt:
+    pkg:          "{{ item }}"
+    state:        installed
+    update_cache: yes
+  with_items:
+    - software-properties-common
+
+# Per https://downloads.mariadb.org/mariadb/repositories/#mirror=accretive&distro=Ubuntu&distro_release=trusty--ubuntu_trusty&version=5.5
+- name: Install the GPG key
+  shell: apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+
+- name: Add MariaDB repository
+  apt_repository:
+    repo: deb [arch=amd64,i386,ppc64el] http://mirrors.accretive-networks.net/mariadb/repo/5.5/ubuntu trusty main
+    state: present
+
+- name: Install MariaDB
+  apt:
+    pkg:          mariadb-server
+    state:        installed
+    update_cache: yes

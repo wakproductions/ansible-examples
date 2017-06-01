@@ -1,6 +1,25 @@
 ## Winston's Ansible Examples
 
-Playing around with Ansible. This is some of the stuff I came up with for experimentation with it.
+Playing around with Ansible. This is some of the stuff I came up with for experimentation with it. Now using
+this for provisioning new servers on AWS
+
+## Naming Convention
+
+I use roles as a means of dividing up steps in setting up a larger system. The system-level roles which configure
+a whole server the way I want it I'm packaging in the 'server-xxxxxxx' named roles. For example, 'server-web' is
+used to configure a newly provisioned web server for running a Ruby on Rails application.
+
+## Set up Ansible on remote system
+
+Seems that Ansible has to be set up remotely for it to work. [Install instructions](http://docs.ansible.com/ansible/intro_installation.html#latest-releases-via-apt-ubuntu):
+
+``
+$ sudo apt-get install software-properties-common
+$ sudo apt-add-repository ppa:ansible/ansible
+$ sudo apt-get update
+$ sudo apt-get install ansible
+``
+
 
 ## My First Ansible Run - Installing Ruby 
 

@@ -1,0 +1,42 @@
+---
+# Based on tutorial https://wiki.postgresql.org/wiki/Compile_and_Install_from_source_code
+
+- name: Install dependencies for Postgres 9.5.0
+  apt: name={{ item }} state=installed
+  with_items:
+    - build-essential
+    - libreadline-dev
+    - zlib1g-dev
+    - flex
+    - bison
+    - libxml2-dev
+    - libxslt-dev
+    - libssl-dev
+
+- name: Create a working directory
+  file:
+    path:  /tmp/build_postgres
+    state: directory
+    mode: 'u+rwx'
+
+- name: Download Postgres
+  get_url:
+    url:  ftp://ftp.postgresql.org/pub/source/v9.5.0/postgresql-9.5.0.tar.bz2
+    dest: /tmp/build_postgres/postgres-9.5.0.tar.bz2
+
+- name: Unpack Postgres
+  unarchive:
+    src: /tmp/build_postgres/postgres-9.5.0.tar.bz2
+    dest: /tmp/build_postgres/
+    remote_src: yes
+
+# INCOMPLETE
+#- name: Build ruby
+#  command: >
+#    {{ item }}
+#    chdir=/tmp/build_postgres/postgres-9.5.0
+#    creates=/usr/local/bin/ruby
+#  with_items:
+#    - ./configure --enable-shared
+#    - make
+#    - make install

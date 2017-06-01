@@ -1,0 +1,8 @@
+---
+
+- name: Update the apt-get repos
+  apt:
+    update_cache: yes
+  tags:
+    - update-apt
+

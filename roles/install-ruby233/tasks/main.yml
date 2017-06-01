@@ -1,0 +1,76 @@
+---
+# This playbook is based on the production server setup process outlined here:
+# http://robmclarty.com/blog/how-to-setup-a-production-server-for-rails-4
+#
+# Also found this example to be very helpful:
+# https://github.com/geerlingguy/ansible-role-ruby/blob/master/tasks/install-from-source.yml
+
+- name: Install dependencies for Ruby 2.3.3
+  apt: name={{ item }} state=installed
+  with_items:
+    - build-essential
+    - libyaml-dev
+    - libxml2-dev
+    - libxslt-dev
+    - autoconf
+    - libc6-dev
+    - ncurses-dev
+    - automake
+    - libtool
+    - bison
+    - subversion
+    - zlib1g # http://askubuntu.com/questions/59205/no-such-file-to-load-zlib-error-when-installing-a-gem
+    - zlib1g-dev  # error while installing bundler: http://stackoverflow.com/questions/9727908/cannot-load-such-file-zlib-even-after-using-rvm-pkg-install-zlib
+    - libssl-dev
+
+- name: Create a working directory
+  file:
+    path:  /tmp/build_ruby
+    state: directory
+    mode: 'u+rwx'
+
+- name: Download Ruby 2.3.3
+  get_url:
+    url:  https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.3.tar.gz
+    dest: /tmp/build_ruby/ruby-2.3.3.tar.gz
+
+- name: Unpack Ruby 2.3.3
+  unarchive:
+    src: /tmp/build_ruby/ruby-2.3.3.tar.gz
+    dest: /tmp/build_ruby/
+    remote_src: yes
+
+- name: Build ruby
+  command: >
+    {{ item }}
+    chdir=/tmp/build_ruby/ruby-2.3.3
+    creates=/usr/local/bin/ruby
+  with_items:
+    - ./configure --enable-shared
+    - make
+    - make install
+
+- name: Add ruby symlinks
+  file:
+    src: "/usr/local/bin/{{ item }}"
+    dest: "/usr/bin/{{ item }}"
+    state: link
+    force: yes
+  with_items:
+    - erb
+    - gem
+    - irb
+    - rake
+    - rdoc
+    - ruby
+
+- name: Remove the working directory
+  file:
+    path:  /tmp/build_ruby
+    state: absent
+
+- name: Install bundler
+  gem:
+    name: bundler
+    version: 1.14.3
+    state: present

@@ -1,0 +1,7 @@
+---
+# Based on tutorial https://wiki.postgresql.org/wiki/Compile_and_Install_from_source_code
+
+- name: Install Tmux
+  apt:
+    name:  tmux
+    state: present
