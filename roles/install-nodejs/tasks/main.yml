@@ -1,0 +1,16 @@
+---
+
+# Based on http://www.hostingadvice.com/how-to/install-nodejs-ubuntu-14-04/
+
+- name: Install Node and NPM
+  apt:
+    pkg:          "{{ item }}"
+    update_cache: true
+    state:        present
+  with_items:
+    - nodejs
+    - npm
+
+- name: Create a symbolic link for node, as many Node.js tools use this name to execute.
+  shell: sudo ln -s /usr/bin/nodejs /usr/bin/node
+  become: true

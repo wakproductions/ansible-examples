@@ -5,3 +5,4 @@ dependencies:
   - { role: install-ruby241 }
   - { role: install-postgres95 }
   - { role: install-docker-ce-xenial }
+  - { role: install-nodejs }
