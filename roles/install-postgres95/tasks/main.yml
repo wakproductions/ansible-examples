@@ -17,3 +17,8 @@
   apt:
     name:  postgresql-9.5
     state: present
+
+# TODO Add to the path
+# PATH=$PATH:/usr/lib/postgresql/9.5/bin
+# https://coderwall.com/p/ynvi0q/updating-path-with-ansible-system-wide
+

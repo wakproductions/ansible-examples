@@ -1,0 +1,16 @@
+---
+
+# https://yarnpkg.com/en/docs/install#linux-tab
+
+- name: Install the GPG key
+  shell:
+    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+- name: Install Yarn
+  apt:
+    pkg:          "{{ item }}"
+    update_cache: true
+    state:        present
+  with_items:
+    - yarn
